@@ -285,7 +285,7 @@ def render_playlist(label, songs):
 
     for song in filtered:
         mood = song.get("mood", "?")
-        tags = ", ".join(song.get("tags", []))
+        tags = ", ".join(list(song.get("tags", [])))  # type: ignore[arg-type]
         st.write(
             f"- **{song['title']}** by {song['artist']} "
             f"(genre {song['genre']}, energy {song['energy']}, mood {mood}) "
@@ -326,12 +326,12 @@ def stats_section(playlists):
     stats = compute_playlist_stats(playlists)
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Total songs", stats["total_songs"])
-    col2.metric("Hype songs", stats["hype_count"])
-    col3.metric("Chill songs", stats["chill_count"])
+    col1.metric("Total songs", int(str(stats["total_songs"])))
+    col2.metric("Hype songs", int(str(stats["hype_count"])))
+    col3.metric("Chill songs", int(str(stats["chill_count"])))
 
     col4, col5, col6 = st.columns(3)
-    col4.metric("Mixed songs", stats["mixed_count"])
+    col4.metric("Mixed songs", int(str(stats["mixed_count"])))
     col5.metric("Hype ratio", f"{stats['hype_ratio']:.2f}")
     col6.metric("Average energy", f"{stats['avg_energy']:.2f}")
 
